@@ -22,7 +22,7 @@ public class PublicController {
     public ResponseEntity<User> createEntry(@RequestBody User user){
         try{
 
-            userService.saveUser(user);
+            userService.saveNewUser(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
         catch (Exception e){
