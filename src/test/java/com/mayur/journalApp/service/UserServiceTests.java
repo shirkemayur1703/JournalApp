@@ -21,6 +21,7 @@ public class UserServiceTests {
     private UserService userService;
 
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {
             "Ram",

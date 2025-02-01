@@ -5,6 +5,8 @@ import com.mayur.journalApp.entity.User;
 import com.mayur.journalApp.repository.JournalEntryRepository;
 import com.mayur.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +25,18 @@ public class JournalEntryService {
     private UserService userService;
 
 
-    public void saveEntry(JournalEntry journalEntry, String userName){
 
-        User user = userService.findByUserName(userName);
-        journalEntry.setDate(LocalDateTime.now());
-        JournalEntry saved = journalEntryRepository.save(journalEntry);
-        user.getJournalEntries().add(saved);
-        userService.saveUser(user);
+    public void saveEntry(JournalEntry journalEntry, String userName){
+        try {
+            User user = userService.findByUserName(userName);
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntry saved = journalEntryRepository.save(journalEntry);
+            user.getJournalEntries().add(saved);
+            userService.saveUser(user);
+        }
+        catch(Exception e){
+            throw new RuntimeException("An error occurred while saving the entry",e);
+        }
     }
 
     public void saveEntry(JournalEntry journalEntry){
